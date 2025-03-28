@@ -5,6 +5,8 @@ const affichageVille = document.querySelector("#city");
 const coordoneeGps = document.querySelector("#gps");
 const temperature = document.querySelector("#temperature");
 const maj = document.querySelector("#details");
+const precipitation = document.querySelector("#precipitation");
+const humidite = document.querySelector("#humidity");
 
 boutonValider.addEventListener("click", () => {
   getLocalisation(inputText.value);
@@ -32,6 +34,8 @@ async function getLocalisation(ville) {
     affichageVille.innerHTML = "Ville non trouvée";
     temperature.innerHTML = "";
     coordoneeGps.innerHTML = "";
+    humidite.innerHTML = "";
+    precipitation.innerHTML = "";
     maj.innerHTML = "Vérifier le nom de la ville";
   }
 }
@@ -41,5 +45,8 @@ async function getMeteo(longitude, latitude) {
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,precipitation,relative_humidity_2m`
   );
   const dataMeteo = await promise.json();
+  console.log(dataMeteo);
+  precipitation.innerHTML = `Precipitation : ${dataMeteo.current.precipitation}`;
+  humidite.innerHTML = `Humidité : ${dataMeteo.current.relative_humidity_2m}`;
   temperature.innerHTML = `${dataMeteo.current.temperature_2m} °C`;
 }
